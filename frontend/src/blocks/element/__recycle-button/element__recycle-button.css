@@ -1,0 +1,17 @@
+.element__recycle-button {
+  background-image: url('./../../../images/vector-recycle.svg');
+  background-color: transparent;
+  border: none;
+  width: 18px;
+  height: 19px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+  padding: 0;
+}
+
+.element__recycle-button:hover {
+  opacity: 0.5;
+}

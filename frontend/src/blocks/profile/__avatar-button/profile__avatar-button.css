@@ -1,0 +1,31 @@
+.profile__avatar-button {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 26px;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .profile__avatar-button {
+    margin-left: 26px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .profile__avatar-button {
+    margin: 0 0 26px;
+  }
+}
+
+.profile__avatar-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: url('./../../../images/vector-avatar.svg');
+}
