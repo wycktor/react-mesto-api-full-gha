@@ -63,8 +63,8 @@ class Api {
   }
 
   // Переключение лайка карточки
-  changeLikeCardStatus(_id, isLiked) {
-    return isLiked ? this.deleteLike(_id) : this.setLike(_id);
+  changeLikeCardStatus(id, isLiked) {
+    return isLiked ? this.deleteLike(id) : this.setLike(id);
   }
 
   // Установка лайка карточки
@@ -93,13 +93,18 @@ class Api {
       })
     });
   }
+
+  // Установить токен
+  setToken(token) {
+    this._headers.authorization = `Bearer ${token}`;
+  }
 }
 
 // Экземпляр класса для работы с API
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-65',
+  baseUrl: 'http://127.0.0.1:3000',
   headers: {
-    authorization: 'c3367b9b-848a-482d-8f8f-edea2d03159c',
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
     'Content-Type': 'application/json'
   }
 });

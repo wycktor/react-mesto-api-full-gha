@@ -1,19 +1,21 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import useFormAndValidation from '../hooks/useFormAndValidation';
 
 export default function EditAvatarPopup(props) {
-  const avatarRef = React.useRef('');
+  const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation({
+    avatar: ''
+  });
 
-  React.useEffect(() => {
-    avatarRef.current.value = '';
+  useEffect(() => {
+    if (!props.isOpen) resetForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     // Передать значения управляемых компонентов во внешний обработчик
-    props.onUpdateAvatar({
-      avatar: avatarRef.current.value
-    });
+    props.onUpdateAvatar({ avatar: values.avatar });
   }
 
   return (
@@ -27,16 +29,18 @@ export default function EditAvatarPopup(props) {
       onClose={props.onClose}
       isLoading={props.isLoading}
       onSubmit={handleSubmit}
+      isValid={isValid}
     >
       <input
-        className="popup__input popup__input_type_avatar"
+        className={`popup__input ${errors.avatar && 'popup__input-error'}`}
         type="url"
         name="avatar"
         placeholder="Ссылка на фото"
-        ref={avatarRef}
+        value={values.avatar || ''}
+        onChange={handleChange}
         required
       />
-      <span className="popup__error avatar-error" />
+      <span className={`${errors.avatar && 'popup__error_visible'}`}>{errors.avatar}</span>
     </PopupWithForm>
   );
 }

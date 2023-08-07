@@ -13,6 +13,7 @@ export default function PopupWithConfirmation(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={props.onCardDelete}
+      isValid={true}
     />
   );
 }

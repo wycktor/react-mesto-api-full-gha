@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import { useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import useFormAndValidation from '../hooks/useFormAndValidation';
 
 export default function EditProfilePopup(props) {
-  const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
+  const { values, handleChange, errors, isValid, resetForm, setValues } = useFormAndValidation({
+    name: '',
+    about: ''
+  });
+
   // Подписка на контекст
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setAbout(currentUser.about);
+  useEffect(() => {
+    setValues({ name: currentUser.name, about: currentUser.about });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, props.isOpen]);
 
-  function handleChangeName(evt) {
-    setName(evt.target.value);
-  }
-
-  function handleChangeAbout(evt) {
-    setAbout(evt.target.value);
-  }
+  useEffect(() => {
+    resetForm({ name: currentUser.name, about: currentUser.about });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser, props.isOpen]);
 
   function handleSubmit(evt) {
     // Запрещаем браузеру переходить по адресу формы
@@ -29,8 +30,8 @@ export default function EditProfilePopup(props) {
 
     // Передаём значения управляемых компонентов во внешний обработчик
     props.onUpdateUser({
-      name,
-      about
+      name: values.name,
+      about: values.about
     });
   }
 
@@ -44,31 +45,32 @@ export default function EditProfilePopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     >
       <input
-        className="popup__input popup__input_type_name"
+        className={`popup__input ${errors.name && 'popup__input-error'}`}
         type="text"
         name="name"
         placeholder="Имя"
         minLength="2"
         maxLength="40"
-        value={name || ''}
-        onChange={handleChangeName}
+        value={values.name || ''}
+        onChange={handleChange}
         required
       />
-      <span className="popup__error name-error" />
+      <span className={`${errors.name && 'popup__error_visible'}`}>{errors.name}</span>
       <input
-        className="popup__input popup__input_type_about"
+        className={`popup__input ${errors.about && 'popup__input-error'}`}
         type="text"
         name="about"
         placeholder="Профессия"
         minLength="2"
         maxLength="200"
-        value={about || ''}
-        onChange={handleChangeAbout}
+        value={values.about || ''}
+        onChange={handleChange}
         required
       />
-      <span className="popup__error about-error" />
+      <span className={`${errors.about && 'popup__error_visible'}`}>{errors.about}</span>
     </PopupWithForm>
   );
 }

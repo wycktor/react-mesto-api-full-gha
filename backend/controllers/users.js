@@ -12,7 +12,8 @@ const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.status(STATUS_CODE_OK).send({ data: users }))
+    // .then((users) => res.status(STATUS_CODE_OK).send({ data: users }))
+    .then((users) => res.status(STATUS_CODE_OK).send(users))
     .catch(next);
 };
 
@@ -22,7 +23,8 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
       } else {
-        res.status(STATUS_CODE_OK).send({ data: user });
+        // res.status(STATUS_CODE_OK).send({ data: user });
+        res.status(STATUS_CODE_OK).send(user);
       }
     })
     .catch((err) => {
@@ -40,7 +42,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь не найден'));
       } else {
-        res.status(STATUS_CODE_OK).send({ data: user });
+        res.status(STATUS_CODE_OK).send(user);
       }
     })
     .catch((err) => {
@@ -66,12 +68,13 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then(() => res.status(STATUS_CODE_CREATED).send({
-      name,
-      about,
-      avatar,
-      email,
-    }))
+    // .then(() => res.status(STATUS_CODE_CREATED).send({
+    //   name,
+    //   about,
+    //   avatar,
+    //   email,
+    // }))
+    .then(() => res.status(STATUS_CODE_CREATED).send(name, about, avatar, email))
     .catch((err) => {
       if (err instanceof ValidationError) {
         next(new BadRequestError('Введены некорректные данные'));
@@ -89,7 +92,7 @@ const updateUserInfo = (data, req, res, next) => {
       if (!newData) {
         next(new NotFoundError('Пользователь не найден'));
       } else {
-        res.status(STATUS_CODE_OK).send({ data: newData });
+        res.status(STATUS_CODE_OK).send(newData);
       }
     })
     .catch((err) => {
