@@ -10,7 +10,7 @@ const router = require('./routes/router');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env;
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -23,7 +23,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://wycktor.nomoreparties.co'],
+    origin: 'https://wycktor.nomoreparties.co',
     maxAge: 30,
   }),
 );
