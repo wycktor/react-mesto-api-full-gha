@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 const { STATUS_CODE_OK, STATUS_CODE_CREATED } = require('../utils/constants');
 
 const BadRequestError = require('../errors/BadRequestError');
@@ -12,7 +13,6 @@ const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    // .then((users) => res.status(STATUS_CODE_OK).send({ data: users }))
     .then((users) => res.status(STATUS_CODE_OK).send(users))
     .catch(next);
 };
@@ -23,7 +23,6 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
       } else {
-        // res.status(STATUS_CODE_OK).send({ data: user });
         res.status(STATUS_CODE_OK).send(user);
       }
     })
@@ -68,12 +67,6 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    // .then(() => res.status(STATUS_CODE_CREATED).send({
-    //   name,
-    //   about,
-    //   avatar,
-    //   email,
-    // }))
     .then(() => res.status(STATUS_CODE_CREATED).send(name, about, avatar, email))
     .catch((err) => {
       if (err instanceof ValidationError) {
@@ -123,9 +116,13 @@ module.exports.login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'secret-key', {
-        expiresIn: '7d',
-      });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
+        {
+          expiresIn: '7d',
+        },
+      );
 
       res.status(STATUS_CODE_OK).send({ token });
     })
