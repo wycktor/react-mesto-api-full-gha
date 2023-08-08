@@ -10,8 +10,7 @@ const router = require('./routes/router');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT } = process.env;
-const { DB } = process.env;
+const { PORT = 3001 } = process.env;
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -45,6 +44,6 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-mongoose.connect(DB);
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 app.listen(PORT);
