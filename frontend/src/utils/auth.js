@@ -1,4 +1,5 @@
 const BASE_URL = 'https://api.wycktor.nomoreparties.co';
+// const BASE_URL = 'http://localhost:3000';
 
 // Запрос к серверу
 const getResponse = res => {

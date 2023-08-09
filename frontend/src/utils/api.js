@@ -102,6 +102,7 @@ class Api {
 
 // Экземпляр класса для работы с API
 const api = new Api({
+  // baseUrl: 'http://localhost:3000',
   baseUrl: 'https://api.wycktor.nomoreparties.co',
   headers: {
     authorization: `Bearer ${localStorage.getItem('jwt')}`,

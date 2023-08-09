@@ -67,7 +67,9 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then(() => res.status(STATUS_CODE_CREATED).send(name, about, avatar, email))
+    .then(() => {
+      res.status(STATUS_CODE_CREATED).send(name, about, avatar, email);
+    })
     .catch((err) => {
       if (err instanceof ValidationError) {
         next(new BadRequestError('Введены некорректные данные'));
