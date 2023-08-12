@@ -42,7 +42,9 @@ module.exports.deleteCard = (req, res, next) => {
           new ForbiddenError('У Вас нет прав на удаление выбранной картчоки'),
         );
       } else {
-        Card.deleteOne(card).then(() => res.status(STATUS_CODE_OK).send(card));
+        Card.deleteOne(card)
+          .then(() => res.status(STATUS_CODE_OK).send(card))
+          .catch(next);
       }
     })
     .catch((err) => {

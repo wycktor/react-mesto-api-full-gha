@@ -30,7 +30,6 @@ function AuthWithForm(props) {
           type="password"
           name="password"
           placeholder="Пароль"
-          minLength="4"
           onChange={handleChange}
           value={values.password || ''}
           required

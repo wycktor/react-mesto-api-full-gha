@@ -5,7 +5,7 @@ const { regexLink } = require('../utils/constants');
 module.exports.loginValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(4),
+    password: Joi.string().required(),
   }),
 });
 
@@ -15,7 +15,7 @@ module.exports.userValidation = celebrate({
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().regex(new RegExp(regexLink)),
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(4),
+    password: Joi.string().required(),
   }),
 });
 

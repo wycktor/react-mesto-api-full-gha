@@ -44,13 +44,7 @@ module.exports.getCurrentUser = (req, res, next) => {
         res.status(STATUS_CODE_OK).send(user);
       }
     })
-    .catch((err) => {
-      if (err instanceof CastError) {
-        next(new BadRequestError('Введены некорректные данные поиска'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -67,8 +61,13 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then(() => {
-      res.status(STATUS_CODE_CREATED).send(name, about, avatar, email);
+    .then((user) => {
+      res.status(STATUS_CODE_CREATED).send({
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      });
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
